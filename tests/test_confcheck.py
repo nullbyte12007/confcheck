@@ -154,6 +154,17 @@ class TestRules(unittest.TestCase):
         buruk = cli.audit_file(FIX / "cisco-bad.cfg").score
         self.assertGreater(baik, buruk)
 
+    def test_fixture_baik_benar_benar_bersih(self):
+        """Regression: fixture 'baik' harus 100%. Bug parser (mis. discover-interface-list=none
+        dianggap discovery aktif) langsung ketangkap di sini."""
+        for nama in ("cisco-good.cfg", "routeros-good.rsc"):
+            rep = cli.audit_file(FIX / nama)
+            gagal = [f.code for f in rep.findings if f.status is Status.FAIL]
+            ragu = [f.code for f in rep.findings if f.status is Status.WARN]
+            self.assertEqual(gagal, [], f"{nama} FAIL tak terduga: {gagal}")
+            self.assertEqual(ragu, [], f"{nama} WARN tak terduga: {ragu}")
+            self.assertEqual(rep.score, 100, nama)
+
 
 class TestReport(unittest.TestCase):
     def _rep(self):

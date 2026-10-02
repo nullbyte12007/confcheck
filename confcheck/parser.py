@@ -212,6 +212,8 @@ def _parse_routeros(dev: Device) -> None:
                     name = m.group(1).strip('"')
             if name:
                 f["services"][name] = "disabled=yes" not in low
+        elif section.startswith("/snmp user") or "auth-protocol" in low or "priv-protocol" in low:
+            f["snmp_v3"] = True
         elif section.startswith("/snmp"):
             # bentuk ekspor: `/snmp community` lalu `add name=public`
             if "name=" in low:
@@ -242,7 +244,9 @@ def _parse_routeros(dev: Device) -> None:
             if "enabled=yes" in low:
                 f["bandwidth_server"] = True
         elif section.startswith("/ip neighbor discovery") or section.startswith("/tool discovery"):
-            f["discovery_enabled"] = "disabled=yes" not in low
+            # RouterOS mematikan discovery lewat discover-interface-list=none
+            f["discovery_enabled"] = not (
+                "disabled=yes" in low or "discover-interface-list=none" in low)
         elif section.startswith("/tool romon"):
             if "enabled=yes" in low:
                 f["romon"] = True

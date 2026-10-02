@@ -14,6 +14,9 @@ set www-ssl disabled=no
 add name=Str4wB3rryR4nd0m
 add name=MonitorK3ras
 
+/snmp user
+add name=monitoring group=read auth-protocol=sha1 auth-password=KunciPanjang123 priv-protocol=aes priv-password=KunciPriv456
+
 /ip firewall filter
 add chain=input action=accept connection-state=established,related
 add chain=input action=drop in-interface=ether1
