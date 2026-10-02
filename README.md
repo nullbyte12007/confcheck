@@ -3,10 +3,10 @@
 **Audit konfigurasi perangkat jaringan** — Cisco IOS & MikroTik RouterOS.
 Satu perintah, temuan berprioritas, plus perintah perbaikannya.
 
-Teman sekamar [hardening-audit](https://github.com/nullbyte12007/hardening-audit):
+Teman sekamar [hardening-audit](https://github.com/myusufcs/hardening-audit):
 yang itu untuk server, yang ini untuk switch/router.
 
-[![CI](https://github.com/nullbyte12007/confcheck/actions/workflows/ci.yml/badge.svg)](https://github.com/nullbyte12007/confcheck/actions/workflows/ci.yml)
+[![CI](https://github.com/myusufcs/confcheck/actions/workflows/ci.yml/badge.svg)](https://github.com/myusufcs/confcheck/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Zero deps](https://img.shields.io/badge/dependencies-none-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -65,7 +65,7 @@ MTK-BURUK               mikrotik-routeros       8%  5/7         ~/configs/router
 Zero dependency — cukup standard library Python 3.10+.
 
 ```bash
-git clone https://github.com/nullbyte12007/confcheck
+git clone https://github.com/myusufcs/confcheck
 cd confcheck
 
 python3 -m confcheck router.cfg                                   # satu perangkat
