@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Hasil audit memuat isi konfigurasi perangkat — jangan di-commit
+reports/
+confcheck-*.txt
+confcheck-*.md
+confcheck-*.json
+ringkasan.json
+*.report.*
+
+# Konfigurasi perangkat asli juga jangan masuk repo ini
+configs/
+*.rsc
+!tests/fixtures/*.rsc
+!tests/fixtures/*.cfg
+
+*.log
+.DS_Store
+.idea/
+.vscode/

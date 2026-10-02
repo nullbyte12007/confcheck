@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile check
+        run: python3 -m compileall -q confcheck
+
+      - name: Jalankan test
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Demo audit (fixture buruk harus melaporkan temuan)
+        run: |
+          set -e
+          python3 -m confcheck tests/fixtures/cisco-bad.cfg --out reports --format json
+          python3 - <<'PY'
+          import json, glob
+          data = json.load(open(glob.glob('reports/confcheck-*.json')[0]))
+          assert data['score'] < 60, data['score']
+          assert data['summary']['FAIL'] >= 3, data['summary']
+          print('cek CI lolos: skor', data['score'], data['summary'])
+          PY
+
+      - name: Fixture baik harus skor tinggi
+        run: |
+          python3 -m confcheck tests/fixtures/cisco-good.cfg --fail-under 90
+          python3 -m confcheck tests/fixtures/routeros-good.rsc --fail-under 90
